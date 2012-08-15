@@ -40,14 +40,20 @@ def eggs_cleaner(old_logging_shutdown, eggs_directory, old_eggs_directory, exten
 
         print("*************** BUILDOUT EGGSCLEANER ****************")
 
-        for eggname in move_eggs:
-            oldpath = "{0}/{1}".format(eggs_directory, eggname)
-            newpath= "{0}/{1}".format(old_eggs_directory, eggname)
-            if not os.path.exists(newpath):
-                shutil.move(oldpath, newpath)
-            else:
-                shutil.rmtree(oldpath)
-            print "Moved unused egg: {0} ".format(eggname)
+        if old_eggs_directory
+            for eggname in move_eggs:
+                oldpath = "{0}/{1}".format(eggs_directory, eggname)
+                newpath= "{0}/{1}".format(old_eggs_directory, eggname)
+                if not os.path.exists(newpath):
+                    shutil.move(oldpath, newpath)
+                else:
+                    shutil.rmtree(oldpath)
+                print("Moved unused egg: {0} ".format(eggname))
+        else:
+            print("Don't have a 'old-eggs-directory' set, only reporting")
+            for eggname in move_eggs:
+                print("Found unused egg: {0} ".format(eggname))
+
 
         if not move_eggs:
             print "No unused eggs in eggs directory"
@@ -63,6 +69,8 @@ def install(buildout):
     old_eggs_directory = 'old-eggs-directory' in buildout['buildout'] and \
                     buildout['buildout']['old-eggs-directory'].strip() or \
                                     None
+
+
     extensions = buildout['buildout'].get('extensions', '').split()
 
     zc.buildout.easy_install.Installer.__used_eggs= {}

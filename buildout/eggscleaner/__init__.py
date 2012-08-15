@@ -35,12 +35,12 @@ def eggs_cleaner(old_logging_shutdown, eggs_directory, old_eggs_directory, exten
                 if not is_extensions:
                     move_eggs.append(eggname)
 
-        if not os.path.exists(old_eggs_directory):
-            os.mkdir(old_eggs_directory)
 
         print("*************** BUILDOUT EGGSCLEANER ****************")
 
         if old_eggs_directory:
+            if not os.path.exists(old_eggs_directory):
+                os.mkdir(old_eggs_directory)
             for eggname in move_eggs:
                 oldpath = "{0}/{1}".format(eggs_directory, eggname)
                 newpath= "{0}/{1}".format(old_eggs_directory, eggname)

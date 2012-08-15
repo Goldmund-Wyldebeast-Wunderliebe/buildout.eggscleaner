@@ -51,6 +51,7 @@ def eggs_cleaner(old_logging_shutdown, eggs_directory, old_eggs_directory, exten
                 print("Moved unused egg: {0} ".format(eggname))
         else:
             print("Don't have a 'old-eggs-directory' set, only reporting")
+            print("Can add it by adding 'old-eggs-directory = ${buildout:directory}/old-eggs' to your [buildout]")
             for eggname in move_eggs:
                 print("Found unused egg: {0} ".format(eggname))
 

@@ -40,7 +40,7 @@ def eggs_cleaner(old_logging_shutdown, eggs_directory, old_eggs_directory, exten
 
         print("*************** BUILDOUT EGGSCLEANER ****************")
 
-        if old_eggs_directory
+        if old_eggs_directory:
             for eggname in move_eggs:
                 oldpath = "{0}/{1}".format(eggs_directory, eggname)
                 newpath= "{0}/{1}".format(old_eggs_directory, eggname)

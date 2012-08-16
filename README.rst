@@ -24,10 +24,11 @@ Options
 
 
     Example ::    
-    [buildout]                                                                 
-    extensions =                                                               
-            buildout.eggscleaner  
-    old-eggs-directory = ${buildout:directory}/old-eggs/
+
+        [buildout]                                                                 
+        extensions =                                                               
+                buildout.eggscleaner  
+        old-eggs-directory = ${buildout:directory}/old-eggs/
 
 Tested under
 -----------

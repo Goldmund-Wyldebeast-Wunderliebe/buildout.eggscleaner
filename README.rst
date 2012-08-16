@@ -18,12 +18,12 @@ Eggscleaner is a buildout extensions, can add it like so ::
 
 Options
 ----------
-    old-eggs-directory
+old-eggs-directory
         The directory you want buildout.eggscleaner to move your unused eggs to.
         Should an excact egg already exist, we remove the one in the ''used'' eggs directory
 
 
-    Example ::    
+Example ::    
 
         [buildout]                                                                 
         extensions =                                                               
@@ -32,5 +32,9 @@ Options
 
 Tested under
 -----------
-Buildout 1.5.1 and 1.5.2
+zc.buildout 1.5.1 and 1.5.2
 
+Working with other extensions
+-----------
+I looked at how buildout.dumppickedversions works and made this extension work in a similar manner.
+This extension will run alongside that one perfectly well.

@@ -1,5 +1,6 @@
-0.1 (xxxx-xx-xx)
+0.1 (unreleased)
 ----------------
 
 - Created recipe with ZopeSkel
   [Peter Uittenbroek]
+

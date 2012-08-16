@@ -22,7 +22,8 @@ Options
         The directory you want buildout.eggscleaner to move your unused eggs to.
         Should an excact egg already exist, we remove the one in the ''used'' eggs directory
 
-        ::
+
+    Example ::    
     [buildout]                                                                 
     extensions =                                                               
             buildout.eggscleaner  

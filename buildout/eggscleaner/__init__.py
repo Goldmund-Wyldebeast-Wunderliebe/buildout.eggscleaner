@@ -30,7 +30,7 @@ def eggs_cleaner(old_logging_shutdown, eggs_directory, old_eggs_directory, exten
         #Determine which eggs aren't used..
         #ignore any which seem to be buildout  extensions
         for eggname in eggsdirectory:
-            fullpath = "%s/%" % (eggs_directory, eggname)
+            fullpath = "%s/%s" % (eggs_directory, eggname)
             if not fullpath in used_eggs.values():
                 is_extensions = False
                 for ext in extensions:

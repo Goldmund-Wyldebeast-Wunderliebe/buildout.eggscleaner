@@ -9,28 +9,20 @@ from setuptools import setup, find_packages
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
-version = '0.1.3'
+version = '0.1.4'
 
 long_description = (
     read('README.rst')
     + '\n' +
     'Detailed Documentation\n'
-    '**********************\n'
+    '======================\n'
     + '\n' +
     read('buildout', 'eggscleaner', 'eggscleaner.txt')
     + '\n' +
-    'Contributors\n'
-    '************\n'
-    + '\n' +
     read('CONTRIBUTORS.txt')
     + '\n' +
-    'Change history\n'
-    '**************\n'
-    + '\n' +
     read('CHANGES.txt')
-    + '\n' +
-   'Download\n'
-    '********\n')
+    + '\n')
 
 entry_point = 'buildout.eggscleaner:install'
 entry_points = {

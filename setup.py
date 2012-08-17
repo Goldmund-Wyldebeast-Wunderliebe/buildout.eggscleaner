@@ -17,7 +17,7 @@ long_description = (
     'Detailed Documentation\n'
     '**********************\n'
     + '\n' +
-    read('buildout', 'eggscleaner', 'README.txt')
+    read('buildout', 'eggscleaner', 'eggscleaner.txt')
     + '\n' +
     'Contributors\n'
     '************\n'
@@ -37,14 +37,12 @@ entry_points = {
         "zc.buildout.extension": ["default= %s" % entry_point]
         }
 
-tests_require = ['zope.testing', 'zc.buildout']
+tests_require = [ 'zc.buildout','zope.testing', 'zc.recipe.egg']
 
 setup(name='buildout.eggscleaner',
       version=version,
       description="A buildout extension to move non-used eggs to a specified directory",
       long_description=long_description,
-      # Get more strings from
-      # http://pypi.python.org/pypi?:action=list_classifiers
       classifiers=[
         'Framework :: Buildout',
         'Intended Audience :: Developers',
@@ -54,7 +52,7 @@ setup(name='buildout.eggscleaner',
       keywords='buildout extensions eggs directory clean',
       author='Peter Uittenbroek',
       author_email='uittenbroek@goldmund-wyldebeast-wunderliebe.com',
-      url="''",
+      url="https://github.com/thepjot/buildout.eggscleaner",
       license='ZPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['buildout', ],
@@ -62,10 +60,9 @@ setup(name='buildout.eggscleaner',
       zip_safe=False,
       install_requires=['setuptools',
                         'zc.buildout'
-                        # -*- Extra requirements: -*-
                         ],
       tests_require=tests_require,
       extras_require=dict(tests=tests_require),
-      test_suite='buildout.eggscleaner.tests.test_docs.test_suite',
+      test_suite='buildout.eggscleaner.tests.test_suite',
       entry_points=entry_points,
       )

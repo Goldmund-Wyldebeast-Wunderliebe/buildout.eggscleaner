@@ -1,0 +1,103 @@
+
+Let's create an egg to use it in our tests::
+
+    >>> mkdir('myegg')
+    >>> write('myegg', 'setup.py',
+    ... '''
+    ... from setuptools import setup
+    ... setup(name='myegg', version='1.0',)
+    ... ''')
+    >>> write('myegg', 'README', '')
+    >>> print system(buildout+' setup myegg bdist_egg'), # doctest: +ELLIPSIS
+    Running setup script 'myegg/setup.py'.
+    ...
+
+    >>> mkdir('baregg')                                                         
+    >>> write('baregg', 'setup.py',                                                                                                                                                                                                   
+    ... '''                                                                    
+    ... from setuptools import setup                                           
+    ... setup(name='baregg', version='1.0',)                                    
+    ... ''')                                                                   
+    >>> write('baregg', 'README', '')                                           
+    >>> print system(buildout+' setup baregg bdist_egg'), # doctest: +ELLIPSIS  
+    Running setup script 'baregg/setup.py'.                                     
+    ...    
+
+Now let's create a buildout to install the egg and to use buildout.eggscleaner::
+
+    >>> write('buildout.cfg',
+    ... '''
+    ... [buildout]
+    ... find-links = http://public-eggs.gw20e.com/buildout.eggscleaner-0.1.1.zip
+    ...              http://pypi.python.org/packages/source/z/zc.buildout/zc.buildout-1.5.2.tar.gz
+    ... index = http://pypi.python.org/simple
+    ... extensions = buildout.eggscleaner
+    ... eggs-directory = ${buildout:directory}/eggs
+    ... parts = foo
+    ... find-links += %s
+    ... [foo]
+    ... recipe = zc.recipe.egg
+    ... eggs = myegg
+    ... ''' % join('myegg', 'dist'))
+
+Running the buildout will print information about unused eggs::
+
+    >>> print system(buildout), # doctest: +ELLIPSIS
+    Getting distribution for 'buildout.eggscleaner'.
+    ...
+
+
+When we only want to report unused eggs we omit the '''old-eggs-directory''' option.
+
+    >>> write('buildout.cfg',
+    ... '''
+    ... [buildout]
+    ... find-links = http://public-eggs.gw20e.com/buildout.eggscleaner-0.1.1.zip
+    ... index = http://pypi.python.org/simple
+    ... extensions = buildout.eggscleaner
+    ... eggs-directory = ${buildout:directory}/eggs
+    ... parts = foo                                                            
+    ... find-links += %s                                                       
+    ... [foo]                                                                  
+    ... recipe = zc.recipe.egg                                                 
+    ... eggs = baregg 
+    ... ''' % join('baregg', 'dist'))   
+
+    >>> print system(buildout) # doctest:+ELLIPSIS 
+    Uninstalling foo.
+    Installing foo.
+    Getting distribution for 'baregg'.
+    Got baregg 1.0.
+    *************** BUILDOUT EGGSCLEANER ****************
+    Don't have a 'old-eggs-directory' set, only reporting
+    Can add it by adding 'old-eggs-directory = ${buildout:directory}/old-eggs' to your [buildout]
+    ...
+    Found unused egg: myegg-1.0-py2.6.egg 
+    *************** /BUILDOUT EGGSCLEANER ****************
+    <BLANKLINE>
+
+
+If we want to move unused eggs, we just add an ``old-eggs-directory`` option and give a directory target::
+
+    >>> write('buildout.cfg',
+    ... '''
+    ... [buildout]
+    ... find-links = http://public-eggs.gw20e.com/buildout.eggscleaner-0.1.1.zip
+    ... index = http://pypi.python.org/simple
+    ... extensions = buildout.eggscleaner
+    ... eggs-directory = ${buildout:directory}/eggs
+    ... old-eggs-directory = ${buildout:directory}/old-eggs
+    ... parts = foo                                                            
+    ... find-links += %s                                                       
+    ... [foo]                                                                                                                                                                                                                        
+    ... recipe = zc.recipe.egg                                                 
+    ... eggs = baregg                                                          
+    ... ''' % join('baregg', 'dist')) 
+
+    >>> print system(buildout) # doctest:+ELLIPSIS 
+    Updating foo.
+    *************** BUILDOUT EGGSCLEANER ****************
+    ...
+    Moved unused egg: myegg-1.0-py2.6.egg
+    *************** /BUILDOUT EGGSCLEANER ****************
+    <BLANKLINE>

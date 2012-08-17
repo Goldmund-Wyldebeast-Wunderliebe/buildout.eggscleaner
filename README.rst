@@ -32,8 +32,8 @@ Example ::
 
 Tested with 
 -----------
-zc.buildout: 1.5.1, 1.5.2, 1.6.0
-python: 2.6
+zc.buildout: 1.4.3, 1.5.1, 1.5.2, 1.6.0
+python: 2.4.6, 2.6.8
 
 Working with other extensions
 -----------

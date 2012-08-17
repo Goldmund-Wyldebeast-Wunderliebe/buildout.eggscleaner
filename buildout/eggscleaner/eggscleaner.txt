@@ -115,3 +115,4 @@ Check that indeed 'myegg' has been moved::
 And baregg is still present::
 
     >>> assert 'baregg' in  ''.join(os.listdir('eggs')), 'baregg is not present in egg dir'
+

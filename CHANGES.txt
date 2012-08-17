@@ -1,6 +1,10 @@
-0.1 (unreleased)
+0.2 (2012-08-17)
 ----------------
 
-- Created recipe with ZopeSkel
-  [Peter Uittenbroek]
+- Added doctest
+  [thepjot]
 
+0.1 (internal release)
+----------------
+- Creation
+  [thepjot]

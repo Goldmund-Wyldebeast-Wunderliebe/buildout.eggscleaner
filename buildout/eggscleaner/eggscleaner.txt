@@ -77,6 +77,11 @@ When we only want to report unused eggs we omit the '''old-eggs-directory''' opt
     <BLANKLINE>
 
 
+
+Check that indeed nothing has been moved nor deleted::
+
+    >>> assert 'myegg' in  ''.join(os.listdir('eggs'))
+
 If we want to move unused eggs, we just add an ``old-eggs-directory`` option and give a directory target::
 
     >>> write('buildout.cfg',
@@ -101,3 +106,12 @@ If we want to move unused eggs, we just add an ``old-eggs-directory`` option and
     Moved unused egg: myegg...
     *************** /BUILDOUT EGGSCLEANER ****************
     <BLANKLINE>
+
+Check that indeed 'myegg' has been moved::
+
+    >>> assert 'myegg' not in  ''.join(os.listdir('eggs')), 'myegg has not been moved out of egg dir'
+    >>> assert 'myegg' in  ''.join(os.listdir('old-eggs')), 'myegg has not been moved to old-egg dir'
+
+And baregg is still present::
+
+    >>> assert 'baregg' in  ''.join(os.listdir('eggs')), 'baregg is not present in egg dir'

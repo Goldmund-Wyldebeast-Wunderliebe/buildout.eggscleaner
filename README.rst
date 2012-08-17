@@ -31,18 +31,18 @@ Example ::
         old-eggs-directory = ${buildout:directory}/old-eggs/
 
 Tested with 
------------
+-------------
 zc.buildout: 1.4.3, 1.5.1, 1.5.2, 1.6.0
 python: 2.4.6, 2.6.8
 
 Working with other extensions
------------
+-----------------------------
 I looked at how buildout.dumppickedversions works and made this extension work in a similar manner.
 This extension will run alongside that one perfectly well.
 
 
 Example outputs
------------
+----------------
 
 Nothing do ::
 

@@ -30,7 +30,7 @@ def eggs_cleaner(old_logging_shutdown, eggs_directory, old_eggs_directory, exten
         #Determine which eggs aren't used..
         #ignore any which seem to be buildout  extensions
         for eggname in eggsdirectory:
-            fullpath = "{0}/{1}".format(eggs_directory, eggname)
+            fullpath = "%s/%" % (eggs_directory, eggname)
             if not fullpath in used_eggs.values():
                 is_extensions = False
                 for ext in extensions:
@@ -49,18 +49,18 @@ def eggs_cleaner(old_logging_shutdown, eggs_directory, old_eggs_directory, exten
                 #Create if needed
                 os.mkdir(old_eggs_directory)
             for eggname in move_eggs:
-                oldpath = "{0}/{1}".format(eggs_directory, eggname)
-                newpath= "{0}/{1}".format(old_eggs_directory, eggname)
+                oldpath = "%s/%s" % (eggs_directory, eggname)
+                newpath= "%s/%s" %(old_eggs_directory, eggname)
                 if not os.path.exists(newpath):
                     shutil.move(oldpath, newpath)
                 else:
                     shutil.rmtree(oldpath)
-                print("Moved unused egg: {0} ".format(eggname))
+                print("Moved unused egg: %s " % eggname)
         else: #Only report
             print("Don't have a 'old-eggs-directory' set, only reporting")
             print("Can add it by adding 'old-eggs-directory = ${buildout:directory}/old-eggs' to your [buildout]")
             for eggname in move_eggs:
-                print("Found unused egg: {0} ".format(eggname))
+                print("Found unused egg: %s " % eggname)
 
         #Nothing to do?
         if not move_eggs:

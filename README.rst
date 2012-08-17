@@ -30,9 +30,10 @@ Example ::
                 buildout.eggscleaner  
         old-eggs-directory = ${buildout:directory}/old-eggs/
 
-Tested under
+Tested with 
 -----------
-zc.buildout 1.5.1 and 1.5.2
+zc.buildout: 1.5.1, 1.5.2, 1.6.0
+python: 2.6
 
 Working with other extensions
 -----------

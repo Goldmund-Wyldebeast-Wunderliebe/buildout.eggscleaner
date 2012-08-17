@@ -73,6 +73,3 @@ Reporting ::
     Found unused egg: Products.Clouseau-1.0-py2.6.egg 
     *************** /BUILDOUT EGGSCLEANER ****************
 
-TODO
------------
-Write tests!!

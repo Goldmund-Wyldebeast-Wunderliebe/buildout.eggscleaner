@@ -8,10 +8,12 @@ logger=zc.buildout.easy_install.logger
 
 def enable_eggscleaner(old_get_dist):
     """Patching method so we can go keep track of all the used eggs"""
-    def get_dist(self, requirement, ws, always_unzip):
-        dists = old_get_dist(self, requirement, ws, always_unzip)
+    def get_dist(self, *kargs, **kwargs):
+        dists = old_get_dist(self, *kargs, **kwargs)
         for dist in dists:
-            self.__used_eggs[dist.egg_name()] = dist.location
+            egg_name = dist.egg_name()
+            if egg_name not in self.__used_eggs:
+                self.__used_eggs[egg_name] = dist.location
         return dists
     return get_dist
 
@@ -72,6 +74,10 @@ def eggs_cleaner(old_logging_shutdown, eggs_directory, old_eggs_directory, exten
 
 def install(buildout):
 
+    # See if the eggs-directory is local or not.
+    buildout_directory = buildout['buildout'].get('directory', None)
+
+
     #Fetch the eggs-directory from the buildout
     eggs_directory = 'eggs-directory' in buildout['buildout'] and buildout['buildout']['eggs-directory'].strip() or None
 
@@ -79,15 +85,25 @@ def install(buildout):
     old_eggs_directory = 'old-eggs-directory' in buildout['buildout'] and \
                     buildout['buildout']['old-eggs-directory'].strip() or \
                                     None
+    # Very basic check to see if the local directory also contains the eggs directory
+    # If not, we don't do anything because the user_default possibly contains 1000's of eggs
+    # Many of which might not be used here, resulting in a cleanup of your local egg repo.
+    # Which is undesired at best ;)
+    if buildout_directory and buildout_directory in eggs_directory:
+        #Get a list of extensions. There is no fancier way to ensure they don't get included.
+        extensions = buildout['buildout'].get('extensions', '').split()
 
-    #Get a list of extensions. There is no fancier way to ensure they don't get included.
-    extensions = buildout['buildout'].get('extensions', '').split()
-
-    #Patch methods
-    zc.buildout.easy_install.Installer.__used_eggs= {}
-    zc.buildout.easy_install.Installer._get_dist = enable_eggscleaner(
-                                  zc.buildout.easy_install.Installer._get_dist)
-    logging.shutdown = eggs_cleaner(logging.shutdown, eggs_directory, old_eggs_directory, extensions)
+        #Patch methods
+        zc.buildout.easy_install.Installer.__used_eggs= {}
+        zc.buildout.easy_install.Installer._get_dist = enable_eggscleaner(
+                                      zc.buildout.easy_install.Installer._get_dist)
+        logging.shutdown = eggs_cleaner(logging.shutdown, eggs_directory, old_eggs_directory, extensions)
+    else:
+        print("*************** BUILDOUT EGGSCLEANER ****************")
+        print("None-local eggs-directory found, skipping. ")
+        print("buildout-directory: {0} ".format(buildout_directory))
+        print("eggs-directory: {0} ".format(eggs_directory))
+        print("*************** /BUILDOUT EGGSCLEANER ****************")
 
 
     pass

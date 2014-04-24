@@ -26,7 +26,6 @@ def eggs_cleaner(old_logging_shutdown, eggs_directory, old_eggs_directory, exten
     """Patching method so we can report and/or move eggs when buildout shuts down"""
 
     def logging_shutdown():
-
         #Set some easy to use variables
         used_eggs = set(zc.buildout.easy_install.Installer.__used_eggs.values())
         eggsdirectory = os.listdir(eggs_directory)
@@ -39,7 +38,6 @@ def eggs_cleaner(old_logging_shutdown, eggs_directory, old_eggs_directory, exten
             fullpath = os.path.normpath(os.path.join(eggs_directory, eggname))
             if sys.platform == 'win32':
                 fullpath = fullpath.lower()
-
             if not fullpath in used_eggs:
                 is_extensions = False
                 for ext in extensions:
@@ -63,7 +61,13 @@ def eggs_cleaner(old_logging_shutdown, eggs_directory, old_eggs_directory, exten
                 if not os.path.exists(newpath):
                     shutil.move(oldpath, newpath)
                 else:
-                    shutil.rmtree(oldpath)
+                    try:
+                        if os.path.isfile(oldpath) or os.path.islink(oldpath):
+                           os.remove(oldpath)
+                        else:
+                           shutil.rmtree(oldpath)
+                    except (OSError, IOError) as e:
+                        print "Can't remove path %s: %s" % (path, e)
                 print("Moved unused egg: %s " % eggname)
         else: #Only report
             print("Don't have a 'old-eggs-directory' set, only reporting")

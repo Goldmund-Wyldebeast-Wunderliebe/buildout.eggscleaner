@@ -1,6 +1,15 @@
 Change history
 ==============
 
+0.1.6 (unreleased)
+------------------
+
+- Make eggscleaner work with latests buildout (2.2.1)
+  [anton-tagunov]
+
+- Only run eggscleaner when eggs-directory is local
+  [thepjot]
+
 0.1.5 (2012-08-17)
 -------------------
 

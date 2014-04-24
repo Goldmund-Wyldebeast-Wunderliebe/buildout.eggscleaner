@@ -28,6 +28,9 @@ def doc_suite(test_dir, setUp=zc.buildout.testing.buildoutSetUp, tearDown=zc.bui
     if package_dir not in sys.path:
         sys.path.append(package_dir)
 
+    globs['find_links'] = os.path.join(package_dir, "../")
+
+
     doctest_dir = test_dir
 
     # filtering files on extension

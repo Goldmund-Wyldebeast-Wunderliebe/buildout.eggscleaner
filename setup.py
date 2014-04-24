@@ -9,7 +9,7 @@ from setuptools import setup, find_packages
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
-version = '0.1.6'
+version = '0.1.6dev'
 
 long_description = (
     read('README.rst')
@@ -17,19 +17,12 @@ long_description = (
     'Detailed Documentation\n'
     '======================\n'
     + '\n' +
-    read('buildout', 'eggscleaner', 'eggscleaner.txt')
+    read('src', 'buildout', 'eggscleaner', 'eggscleaner.txt')
     + '\n' +
     read('CONTRIBUTORS.txt')
     + '\n' +
     read('CHANGES.txt')
     + '\n')
-
-entry_point = 'buildout.eggscleaner:install'
-entry_points = {
-        "zc.buildout.extension": ["default= %s" % entry_point]
-        }
-
-tests_require = [ 'zc.buildout','zope.testing', 'zc.recipe.egg']
 
 setup(name='buildout.eggscleaner',
       version=version,
@@ -44,17 +37,25 @@ setup(name='buildout.eggscleaner',
       keywords='buildout extensions eggs directory clean',
       author='Peter Uittenbroek',
       author_email='uittenbroek@goldmund-wyldebeast-wunderliebe.com',
-      url="https://github.com/thepjot/buildout.eggscleaner",
+      url="https://github.com/Goldmund-Wyldebeast-Wunderliebe/buildout.eggscleaner",
       license='ZPL',
-      packages=find_packages(exclude=['ez_setup']),
+      packages = find_packages('src'),
+      package_dir = {'':'src'},
       namespace_packages=['buildout', ],
       include_package_data=True,
       zip_safe=False,
       install_requires=['setuptools',
                         'zc.buildout'
                         ],
-      tests_require=tests_require,
-      extras_require=dict(tests=tests_require),
-      test_suite='buildout.eggscleaner.tests.test_suite',
-      entry_points=entry_points,
+      extras_require={
+          'test': [
+              'zc.buildout',
+              'zope.testing', 
+              'zc.recipe.egg'
+          ]
+      },
+      # test_suite='buildout.eggscleaner.tests.test_suite',
+      entry_points={
+        "zc.buildout.extension": ["default= buildout.eggscleaner:install"]
+        },
       )

@@ -4,6 +4,9 @@ Change history
 0.1.6 (unreleased)
 ------------------
 
+- Make eggscleaner run under windows
+  [anton-tagunov]
+
 - Make eggscleaner work with latests buildout (2.2.1)
   [anton-tagunov]
 

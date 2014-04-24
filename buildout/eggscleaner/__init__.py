@@ -2,6 +2,7 @@ import os
 import logging
 import zc.buildout.easy_install
 import shutil
+import sys
 
 logger=zc.buildout.easy_install.logger
 
@@ -12,8 +13,11 @@ def enable_eggscleaner(old_get_dist):
         dists = old_get_dist(self, *kargs, **kwargs)
         for dist in dists:
             egg_name = dist.egg_name()
+            path = os.path.normpath(dist.location)
+            if sys.platform == 'win32':
+                path = path.lower()
             if egg_name not in self.__used_eggs:
-                self.__used_eggs[egg_name] = dist.location
+                self.__used_eggs[egg_name] = path
         return dists
     return get_dist
 
@@ -24,7 +28,7 @@ def eggs_cleaner(old_logging_shutdown, eggs_directory, old_eggs_directory, exten
     def logging_shutdown():
 
         #Set some easy to use variables
-        used_eggs = zc.buildout.easy_install.Installer.__used_eggs
+        used_eggs = set(zc.buildout.easy_install.Installer.__used_eggs.values())
         eggsdirectory = os.listdir(eggs_directory)
         move_eggs = []
 
@@ -32,8 +36,11 @@ def eggs_cleaner(old_logging_shutdown, eggs_directory, old_eggs_directory, exten
         #Determine which eggs aren't used..
         #ignore any which seem to be buildout  extensions
         for eggname in eggsdirectory:
-            fullpath = "%s/%s" % (eggs_directory, eggname)
-            if not fullpath in used_eggs.values():
+            fullpath = os.path.normpath(os.path.join(eggs_directory, eggname))
+            if sys.platform == 'win32':
+                fullpath = fullpath.lower()
+
+            if not fullpath in used_eggs:
                 is_extensions = False
                 for ext in extensions:
                     if ext in eggname:
@@ -51,8 +58,8 @@ def eggs_cleaner(old_logging_shutdown, eggs_directory, old_eggs_directory, exten
                 #Create if needed
                 os.mkdir(old_eggs_directory)
             for eggname in move_eggs:
-                oldpath = "%s/%s" % (eggs_directory, eggname)
-                newpath= "%s/%s" %(old_eggs_directory, eggname)
+                oldpath = os.path.join(eggs_directory, eggname)
+                newpath= os.path.join(old_eggs_directory, eggname)
                 if not os.path.exists(newpath):
                     shutil.move(oldpath, newpath)
                 else:

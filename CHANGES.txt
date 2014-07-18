@@ -1,6 +1,10 @@
 Change history
 ==============
 
+0.1.8 (unreleased)
+------------------
+
+
 0.1.7 (2014-07-18)
 ------------------
 - Bump version to fix previous release mess

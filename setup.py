@@ -26,21 +26,21 @@ long_description = (
 
 entry_point = 'buildout.eggscleaner:install'
 entry_points = {
-        "zc.buildout.extension": ["default= %s" % entry_point]
-        }
+    "zc.buildout.extension": ["default= %s" % entry_point]
+}
 
-tests_require = [ 'zc.buildout','zope.testing', 'zc.recipe.egg']
+tests_require = ['zc.buildout', 'zope.testing', 'zc.recipe.egg']
 
 setup(name='buildout.eggscleaner',
       version=version,
       description="A buildout extension to move non-used eggs to a specified directory",
       long_description=long_description,
       classifiers=[
-        'Framework :: Buildout',
-        'Intended Audience :: Developers',
-        'Topic :: Software Development :: Build Tools',
-        'License :: OSI Approved :: Zope Public License',
-        ],
+          'Framework :: Buildout',
+          'Intended Audience :: Developers',
+          'Topic :: Software Development :: Build Tools',
+          'License :: OSI Approved :: Zope Public License',
+      ],
       keywords='buildout extensions eggs directory clean',
       author='Peter Uittenbroek',
       author_email='uittenbroek@goldmund-wyldebeast-wunderliebe.com',

@@ -26,6 +26,12 @@ def eggs_cleaner(old_logging_shutdown, eggs_directory, old_eggs_directory, exten
     """Patching method so we can report and/or move eggs when buildout shuts down"""
 
     def logging_shutdown():
+        exc_type, exc_value = sys.exc_info()[:2]
+        if exc_type or exc_value:
+            print('Handling %s exception with message "%s"' % (exc_type.__name__, exc_value))
+            old_logging_shutdown()
+            return
+
         #Set some easy to use variables
         used_eggs = set(zc.buildout.easy_install.Installer.__used_eggs.values())
         eggsdirectory = os.listdir(eggs_directory)
